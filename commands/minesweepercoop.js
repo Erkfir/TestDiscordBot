@@ -1,35 +1,29 @@
 let emotes = require("../resources/emojiCharacters");
 emotes[9] = ":bomb:";
+emotes["blank"] = ":blue_square:";
+
+const letters = {
+    1: "a",
+    2: "b",
+    3: "c",
+    4: "d",
+    5: "e",
+    6: "f",
+    7: "g",
+    8: "h",
+    9: "i",
+    10: "j"
+};
 
 module.exports = {
-    name: 'minesweeper',
-    aliases: ["ms"],
-    description: 'Generate a minesweeper board. Defaults to 10x10 grid with 10 bombs. Max of 13 columns.',
-    usage: '[number of bombs] [number of rows] [number of columns]',
+    name: "minesweepercoop",
+    aliases: ["coopms"],
+    description: "It's coop minesweeper",
     cooldown: 5,
     execute(message, args) {
-        let numBombs = args[0];
-        let numRows = args[1];
-        let numCols = args[2];
-
-        if (numBombs == null) {
-            numBombs = 10;
-        }
-
-        if (numRows == null) {
-            numRows = 10;
-        }
-
-        if (numCols == null || numCols > 13) {
-            numCols = 10;
-        }
-
-        if (numBombs >= (numRows * numCols)) {
-            message.channel.send("You need to have more bombs than available spaces!");
-            return;
-        }
-
-
+        let numBombs = 10;
+        let numRows = 10;
+        let numCols = 10;
 
         let board = [];
 
@@ -65,13 +59,20 @@ module.exports = {
         }
 
         let output = "";
+        let letter = 1;
 
         for (let i = 0; i < numRows; i++) {
+            output += emotes[letters[letter]];
+            letter++;
+
+            if (letter > 10) letter = 1;
+
             for (let j = 0; j < numCols; j++) {
-                output += "||" + emotes[board[i][j]] + "||";
+                output += emotes["blank"];
             }
             output += "\n";
         }
+        output += emotes["blank"] + ":regional_indicator_a::regional_indicator_b::regional_indicator_c::regional_indicator_d::regional_indicator_e::regional_indicator_f::regional_indicator_g::regional_indicator_h::regional_indicator_i::regional_indicator_j:"
 
         if (output.length > 2000) {
             message.channel.send("The given grid is too large :(");
@@ -79,5 +80,6 @@ module.exports = {
         }
 
         message.channel.send(output);
+
     },
 };
